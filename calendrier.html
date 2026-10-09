@@ -46,8 +46,13 @@
   .events li::before { content: "★ "; }
   footer { display: flex; gap: 6mm; align-items: center; font-size: 7.5pt; margin-top: 2mm; }
   .sw { display: inline-block; width: 6mm; height: 3mm; border: .2mm solid #000; vertical-align: middle; margin-right: 1mm; }
+  td.vac .ev, td.vac b, td.vac i { background: #fff; padding: 0 .3mm; }
+  .sw-ev { outline: .55mm solid #000; outline-offset: -.55mm; }
+  .sw-vac { background: repeating-linear-gradient(135deg, #fff 0 .55mm, #9a9a9a .55mm .8mm); }
+  .sw-we { background: #d9d9d9; }
   footer > span { white-space: nowrap; }
   footer .right { margin-left: auto; }
+
 </style>
 </head>
 <body>
@@ -104,12 +109,12 @@
   </table>
   <section class="events"><h2>Les rendez-vous de l'APE</h2><ul><li><b>Café des parents</b> — mardi 1er septembre à 8h30</li><li><b>Halloween</b> — samedi 31 octobre à 17h</li><li><b>Pizz'APE</b> — samedi 28 novembre à 8h</li><li><b>Arbre de Noël</b> — dimanche 13 décembre à 16h</li><li><b>Carnaval</b> — vendredi 19 mars à 17h30</li><li><b>Fête de l'école</b> — vendredi 4 juin à 17h30</li></ul></section>
   <footer>
-    <span><span class="sw" style="outline:.55mm solid #000;outline-offset:-.55mm"></span><b>★ Événement de l'APE</b></span>
-    <span><span class="sw" style="background:repeating-linear-gradient(135deg,#fff 0 .55mm,#9a9a9a .55mm .8mm)"></span>Vacances scolaires zone A (Lyon)</span>
-    <span><span class="sw" style="background:#d9d9d9"></span>Week-end</span>
+    <span><span class="sw sw-ev"></span><b>★ Événement de l'APE</b></span>
+    <span><span class="sw sw-vac"></span>Vacances scolaires zone A (Lyon)</span>
+    <span><span class="sw sw-we"></span>Week-end</span>
     <span><b><u>1</u></b> Jour férié</span>
     <span>Rentrée : mardi 1er septembre 2026</span>
-    <span class="right">Dates susceptibles d'évoluer — à jour sur www.volent.fr/calendrier-ape</span>
+    <span class="right">www.volent.fr/calendrier-ape</span>
   </footer>
 </div>
 </body>

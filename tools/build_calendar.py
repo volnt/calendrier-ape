@@ -95,9 +95,15 @@ def main():
             items.append(f'<li><b>{s_}</b> — {JS[d.weekday()]} {d.day if d.day > 1 else "1er"} {MOIS[d.month-1].lower()}{" à " + t if t else ""}</li>')
     evlist = "".join(items)
     head = "".join(f"<th>{MOIS[m-1]}<small>{y}</small></th>" for y, m in months)
-    html = TEMPLATE.format(head=head, rows="\n".join(rows), qr=qr, evlist=evlist, y1=START_YEAR, y2=START_YEAR + 1, page=PAGE.replace("https://", "").rstrip("/"))
-    (ROOT / "calendrier.html").write_text(html)
-    print("calendrier.html écrit")
+    common = dict(head=head, rows="\n".join(rows), qr=qr, evlist=evlist, y1=START_YEAR, y2=START_YEAR + 1,
+                  page=PAGE.replace("https://", "").rstrip("/"))
+    variants = {
+        "calendrier.html": dict(logo="logo-nb.png", extra_css=""),
+        "calendrier-couleur.html": dict(logo="logo.png", extra_css=COULEUR_CSS),
+    }
+    for name, v in variants.items():
+        (ROOT / name).write_text(TEMPLATE.format(**common, **v))
+        print(name, "écrit")
 
 TEMPLATE = """<!DOCTYPE html>
 <html lang="fr">
@@ -147,14 +153,19 @@ TEMPLATE = """<!DOCTYPE html>
   .events li::before {{ content: "★ "; }}
   footer {{ display: flex; gap: 6mm; align-items: center; font-size: 7.5pt; margin-top: 2mm; }}
   .sw {{ display: inline-block; width: 6mm; height: 3mm; border: .2mm solid #000; vertical-align: middle; margin-right: 1mm; }}
+  td.vac .ev, td.vac b, td.vac i {{ background: #fff; padding: 0 .3mm; }}
+  .sw-ev {{ outline: .55mm solid #000; outline-offset: -.55mm; }}
+  .sw-vac {{ background: repeating-linear-gradient(135deg, #fff 0 .55mm, #9a9a9a .55mm .8mm); }}
+  .sw-we {{ background: #d9d9d9; }}
   footer > span {{ white-space: nowrap; }}
   footer .right {{ margin-left: auto; }}
+{extra_css}
 </style>
 </head>
 <body>
 <div class="sheet">
   <header>
-    <img src="logo-nb.png" alt="Logo de l'APE École L'Eau Vive Éveux">
+    <img src="{logo}" alt="Logo de l'APE École L'Eau Vive Éveux">
     <div class="title">
       <h1>Calendrier de l'APE<br>Année scolaire {y1}-{y2}</h1>
       <p>École L'Eau Vive · Éveux — les événements de l'association des parents d'élèves</p>
@@ -169,16 +180,37 @@ TEMPLATE = """<!DOCTYPE html>
   </table>
   <section class="events"><h2>Les rendez-vous de l'APE</h2><ul>{evlist}</ul></section>
   <footer>
-    <span><span class="sw" style="outline:.55mm solid #000;outline-offset:-.55mm"></span><b>★ Événement de l'APE</b></span>
-    <span><span class="sw" style="background:repeating-linear-gradient(135deg,#fff 0 .55mm,#9a9a9a .55mm .8mm)"></span>Vacances scolaires zone A (Lyon)</span>
-    <span><span class="sw" style="background:#d9d9d9"></span>Week-end</span>
+    <span><span class="sw sw-ev"></span><b>★ Événement de l'APE</b></span>
+    <span><span class="sw sw-vac"></span>Vacances scolaires zone A (Lyon)</span>
+    <span><span class="sw sw-we"></span>Week-end</span>
     <span><b><u>1</u></b> Jour férié</span>
     <span>Rentrée : mardi 1er septembre {y1}</span>
-    <span class="right">Dates susceptibles d'évoluer — à jour sur {page}</span>
+    <span class="right">{page}</span>
   </footer>
 </div>
 </body>
 </html>
+"""
+
+# Version couleur : teintes du logo, mais foncées / motifs conservés pour rester
+# lisible si elle est imprimée en noir et blanc.
+COULEUR_CSS = """
+  th { background: #0b5394; border-color: #0b5394; }
+  th:nth-child(3n+1) { background: #b0124f; border-color: #b0124f; }
+  th:nth-child(3n+2) { background: #3f7a0e; border-color: #3f7a0e; }
+  h1 { color: #b0124f; }
+  td.we, .sw-we { background: #cfe2f3; }
+  td.vac, .sw-vac { background: repeating-linear-gradient(135deg, #fff 0 .55mm, #6aa121 .55mm .8mm); }
+  td.we.vac { background: repeating-linear-gradient(135deg, #cfe2f3 0 .55mm, #3f7a0e .55mm .8mm); }
+  td.none { background: #0b5394; }
+  td.event, .sw-ev { outline-color: #b0124f; outline-width: .7mm; outline-offset: -.7mm; }
+  .ev { color: #b0124f; }
+  td.ferie b, td.ferie i, .fer { color: #0b5394; }
+  .qr { border-color: #0b5394; }
+  .qr strong { color: #b0124f; }
+  .events { border-color: #b0124f; }
+  .events h2 { color: #b0124f; }
+  .events li::before { color: #b0124f; }
 """
 
 if __name__ == "__main__":
