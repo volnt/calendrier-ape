@@ -93,7 +93,27 @@
       border: 1px solid #d1d5db; background: #fff; border-radius: 10px;
       font: inherit; font-weight: 600; color: var(--text); cursor: pointer;
     }
+    .privacy {
+      display: flex; gap: 12px; align-items: flex-start; text-align: left;
+      background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;
+      border-radius: 12px; padding: 14px 16px; margin-top: 8px; font-size: 0.95rem;
+    }
+    .privacy span { font-size: 1.4rem; line-height: 1.2; }
+    .privacy p { margin: 0; }
+    .qr-box { display: none; }
+    @media (min-width: 820px) and (hover: hover) {
+      .qr-box {
+        display: flex; gap: 16px; align-items: center; text-align: left;
+        margin-top: 20px; padding: 16px; border: 2px solid #1a73e8; border-radius: 16px;
+        color: var(--muted); font-size: 0.95rem;
+      }
+      .qr-box p { margin: 0; }
+      .qr-box strong { color: var(--text); display: block; }
+      .qr { flex: none; width: 140px; height: 140px; background: #fff; padding: 8px; border-radius: 8px; }
+      .qr svg { width: 100%; height: 100%; display: block; }
+    }
     @media (prefers-color-scheme: dark) {
+      .privacy { background: #064e3b; color: #d1fae5; border-color: #065f46; }
       :root { --bg: #0b1220; --card: #111827; --text: #f9fafb; --muted: #cbd5e1; --apple: #f9fafb; --apple-hover: #e5e7eb; }
       .btn-apple { color: #111; }
       details { background: #1f2937; }
@@ -106,14 +126,14 @@
   <main>
     <img class="logo" src="logo.png" width="200" height="200" alt="Logo de l'APE École L'Eau Vive Éveux">
     <h1>Abonnez-vous au calendrier de l'APE</h1>
-    <p class="intro">Recevez automatiquement tous les événements dans votre téléphone. Choisissez l'option qui correspond à votre appareil&nbsp;:</p>
+    <p class="intro">Recevez automatiquement les événements de l'APE dans l'agenda de votre téléphone. Choisissez l'application que vous utilisez&nbsp;:</p>
 
     <div class="choice">
       <a class="btn btn-google" href="https://calendar.google.com/calendar/u/0/r?cid=ape.leauvive@gmail.com" rel="noopener noreferrer nofollow">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 16H5V9h14v11ZM7 11h5v5H7v-5Z"/></svg>
-        Google Agenda / Android
+        J'utilise Google Agenda
       </a>
-      <p class="hint">Pour les comptes Google et les téléphones Android. Synchronisation instantanée avec l'application Google Agenda.</p>
+      <p class="hint">L'application <strong>Google Agenda</strong> (Android, ordinateur, ou iPhone avec l'app Google). Mises à jour instantanées.</p>
     </div>
 
     <div class="divider">ou</div>
@@ -121,14 +141,29 @@
     <div class="choice">
       <a class="btn btn-apple" href="webcal://calendar.google.com/calendar/ical/ape.leauvive%40gmail.com/public/basic.ics" rel="noopener noreferrer nofollow">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.08 2.65-2.14.84-1.23 1.18-2.42 1.2-2.48-.03-.01-2.3-.88-2.32-3.5ZM14.2 6.13c.6-.73 1-1.74.9-2.75-.87.04-1.92.58-2.54 1.3-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.21Z"/></svg>
-        Calendrier Apple / iPhone
+        J'utilise le Calendrier de l'iPhone
       </a>
-      <p class="hint">Pour iPhone et iPad. Ouvre directement l'application Calendrier pour vous abonner en un geste. Mise à jour toutes les 15 à 60&nbsp;minutes.</p>
+      <p class="hint">L'application <strong>Calendrier</strong> d'Apple (iPhone, iPad, Mac). Ouvre directement l'app pour vous abonner en un geste. Mises à jour toutes les 15 à 60&nbsp;minutes.</p>
+    </div>
+
+    <div class="privacy" role="note">
+      <span aria-hidden="true">🔒</span>
+      <p><strong>Votre agenda reste privé.</strong> Vous recevez uniquement les événements de l'APE&nbsp;: l'APE ne voit pas votre agenda ni vos rendez-vous personnels.</p>
+    </div>
+
+    <div class="qr-box">
+      <div class="qr"><svg viewBox="0 0 29 29" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<g id="QRcode">
+		<rect x="0" y="0" fill="#ffffff"/>
+		<path style="stroke:#000000" transform="translate(0,0.5)" d="M0,0h1M1,0h1M2,0h1M3,0h1M4,0h1M5,0h1M6,0h1M8,0h1M9,0h1M10,0h1M14,0h1M15,0h1M18,0h1M22,0h1M23,0h1M24,0h1M25,0h1M26,0h1M27,0h1M28,0h1M0,1h1M6,1h1M9,1h1M11,1h1M12,1h1M16,1h1M17,1h1M18,1h1M19,1h1M22,1h1M28,1h1M0,2h1M2,2h1M3,2h1M4,2h1M6,2h1M9,2h1M14,2h1M15,2h1M17,2h1M18,2h1M19,2h1M20,2h1M22,2h1M24,2h1M25,2h1M26,2h1M28,2h1M0,3h1M2,3h1M3,3h1M4,3h1M6,3h1M8,3h1M9,3h1M10,3h1M15,3h1M16,3h1M18,3h1M19,3h1M22,3h1M24,3h1M25,3h1M26,3h1M28,3h1M0,4h1M2,4h1M3,4h1M4,4h1M6,4h1M8,4h1M10,4h1M11,4h1M12,4h1M14,4h1M15,4h1M16,4h1M18,4h1M20,4h1M22,4h1M24,4h1M25,4h1M26,4h1M28,4h1M0,5h1M6,5h1M8,5h1M10,5h1M12,5h1M18,5h1M19,5h1M20,5h1M22,5h1M28,5h1M0,6h1M1,6h1M2,6h1M3,6h1M4,6h1M5,6h1M6,6h1M8,6h1M10,6h1M12,6h1M14,6h1M16,6h1M18,6h1M20,6h1M22,6h1M23,6h1M24,6h1M25,6h1M26,6h1M27,6h1M28,6h1M8,7h1M9,7h1M13,7h1M15,7h1M16,7h1M17,7h1M18,7h1M19,7h1M0,8h1M4,8h1M6,8h1M7,8h1M8,8h1M11,8h1M12,8h1M13,8h1M16,8h1M17,8h1M19,8h1M21,8h1M22,8h1M23,8h1M24,8h1M25,8h1M28,8h1M1,9h1M2,9h1M3,9h1M5,9h1M7,9h1M9,9h1M13,9h1M14,9h1M15,9h1M16,9h1M17,9h1M18,9h1M21,9h1M22,9h1M23,9h1M24,9h1M25,9h1M26,9h1M27,9h1M28,9h1M0,10h1M2,10h1M3,10h1M4,10h1M5,10h1M6,10h1M7,10h1M12,10h1M15,10h1M17,10h1M18,10h1M22,10h1M23,10h1M24,10h1M28,10h1M3,11h1M5,11h1M7,11h1M8,11h1M10,11h1M11,11h1M12,11h1M14,11h1M15,11h1M16,11h1M17,11h1M19,11h1M20,11h1M21,11h1M24,11h1M25,11h1M27,11h1M28,11h1M0,12h1M1,12h1M3,12h1M4,12h1M6,12h1M7,12h1M8,12h1M10,12h1M12,12h1M13,12h1M14,12h1M17,12h1M19,12h1M20,12h1M21,12h1M27,12h1M0,13h1M3,13h1M4,13h1M9,13h1M10,13h1M15,13h1M16,13h1M18,13h1M22,13h1M24,13h1M25,13h1M26,13h1M27,13h1M28,13h1M0,14h1M2,14h1M4,14h1M6,14h1M8,14h1M9,14h1M11,14h1M12,14h1M13,14h1M14,14h1M15,14h1M17,14h1M18,14h1M24,14h1M25,14h1M26,14h1M28,14h1M2,15h1M5,15h1M7,15h1M12,15h1M13,15h1M15,15h1M17,15h1M18,15h1M19,15h1M20,15h1M27,15h1M28,15h1M0,16h1M2,16h1M5,16h1M6,16h1M10,16h1M11,16h1M13,16h1M15,16h1M17,16h1M20,16h1M21,16h1M23,16h1M27,16h1M0,17h1M1,17h1M2,17h1M4,17h1M5,17h1M8,17h1M11,17h1M13,17h1M14,17h1M15,17h1M17,17h1M18,17h1M20,17h1M22,17h1M23,17h1M24,17h1M25,17h1M27,17h1M28,17h1M5,18h1M6,18h1M7,18h1M12,18h1M15,18h1M16,18h1M18,18h1M24,18h1M26,18h1M28,18h1M3,19h1M4,19h1M5,19h1M7,19h1M8,19h1M9,19h1M11,19h1M12,19h1M14,19h1M16,19h1M17,19h1M20,19h1M21,19h1M22,19h1M27,19h1M28,19h1M0,20h1M1,20h1M3,20h1M6,20h1M8,20h1M11,20h1M13,20h1M14,20h1M16,20h1M17,20h1M19,20h1M20,20h1M21,20h1M22,20h1M23,20h1M24,20h1M25,20h1M28,20h1M8,21h1M11,21h1M15,21h1M16,21h1M18,21h1M20,21h1M24,21h1M28,21h1M0,22h1M1,22h1M2,22h1M3,22h1M4,22h1M5,22h1M6,22h1M8,22h1M11,22h1M13,22h1M14,22h1M15,22h1M17,22h1M18,22h1M19,22h1M20,22h1M22,22h1M24,22h1M25,22h1M26,22h1M28,22h1M0,23h1M6,23h1M9,23h1M10,23h1M13,23h1M15,23h1M17,23h1M19,23h1M20,23h1M24,23h1M28,23h1M0,24h1M2,24h1M3,24h1M4,24h1M6,24h1M8,24h1M10,24h1M13,24h1M17,24h1M19,24h1M20,24h1M21,24h1M22,24h1M23,24h1M24,24h1M25,24h1M27,24h1M0,25h1M2,25h1M3,25h1M4,25h1M6,25h1M9,25h1M11,25h1M14,25h1M15,25h1M16,25h1M19,25h1M21,25h1M23,25h1M28,25h1M0,26h1M2,26h1M3,26h1M4,26h1M6,26h1M10,26h1M11,26h1M12,26h1M15,26h1M19,26h1M20,26h1M21,26h1M25,26h1M26,26h1M27,26h1M28,26h1M0,27h1M6,27h1M13,27h1M14,27h1M15,27h1M16,27h1M17,27h1M20,27h1M22,27h1M24,27h1M25,27h1M27,27h1M28,27h1M0,28h1M1,28h1M2,28h1M3,28h1M4,28h1M5,28h1M6,28h1M8,28h1M9,28h1M10,28h1M12,28h1M14,28h1M15,28h1M17,28h1M20,28h1M21,28h1M23,28h1M24,28h1M27,28h1"/>
+	</g>
+</svg></div>
+      <p><strong>Sur ordinateur&nbsp;?</strong> Scannez ce QR code avec l'appareil photo de votre téléphone pour ouvrir cette page.</p>
     </div>
 
     <details>
       <summary>Pourquoi deux boutons&nbsp;?</summary>
-      <p>Google et Apple gèrent les calendriers différemment. Choisissez <strong>Google Agenda / Android</strong> si vous utilisez un compte Google&nbsp;: les changements s'affichent tout de suite. Choisissez <strong>Calendrier Apple / iPhone</strong> pour vous abonner directement dans l'application Calendrier de votre iPhone.</p>
+      <p>Google et Apple gèrent les calendriers différemment. Choisissez <strong>Google Agenda</strong> si vous utilisez l'application Google Agenda&nbsp;: les changements s'affichent tout de suite. Choisissez <strong>Calendrier de l'iPhone</strong> pour vous abonner directement dans l'application Calendrier de votre iPhone.</p>
       <p>Si le bouton ne fonctionne pas, copiez le lien ci-dessous et ajoutez-le comme «&nbsp;calendrier par URL&nbsp;» dans votre application.</p>
       <button class="copy" type="button" id="copy">Copier le lien du calendrier</button>
     </details>

@@ -31,6 +31,15 @@ FERIES = {
 }
 COURT = {"Café des parents": "Café parents"}  # libellés raccourcis dans les cases
 SPECIAUX = {dt.date(2026,9,1): "Rentrée"}
+# Emoji par événement (mot-clé en minuscules -> emoji). ★ par défaut.
+EMOJIS = [("pizz", "🍕"), ("noël", "🎄"), ("carnaval", "🎭"), ("fête", "🎉"),
+          ("grenier", "🧸"), ("café", "☕"), ("halloween", "🎃")]
+
+def emoji(summary):
+    if summary and not summary[0].isalnum():  # titre commençant déjà par un emoji
+        return ""
+    low = summary.lower()
+    return next((e for k, e in EMOJIS if k in low), "★") + " "
 
 def events():
     raw = urllib.request.urlopen(ICS).read().decode()
@@ -81,7 +90,7 @@ def main():
                 label = f'<span class="special">{SPECIAUX[d]}</span> '
             if d in ev:
                 cls.append("event")
-                label += "".join(f'<span class="ev">★ {COURT.get(s, s)}</span>' for t, s in ev[d])
+                label += "".join(f'<span class="ev">{emoji(s)}{COURT.get(s, s)}</span>' for t, s in ev[d])
             elif d in FERIES:
                 label += f'<span class="fer">{FERIES[d]}</span>'
             cells.append(f'<td class="{" ".join(cls)}"><div class="c"><span class="n"><b>{day}</b><i>{JOURS[d.weekday()]}</i></span>{f'<span class="lbl">{label}</span>' if label else ""}</div></td>')
@@ -92,7 +101,7 @@ def main():
     items = []
     for d in sorted(k for k in ev if first <= k <= last):
         for t, s_ in ev[d]:
-            items.append(f'<li><b>{s_}</b> — {JS[d.weekday()]} {d.day if d.day > 1 else "1er"} {MOIS[d.month-1].lower()}{" à " + t if t else ""}</li>')
+            items.append(f'<li><span class="em">{emoji(s_)}</span><b>{s_}</b> — {JS[d.weekday()]} {d.day if d.day > 1 else "1er"} {MOIS[d.month-1].lower()}{" à " + t if t else ""}</li>')
     evlist = "".join(items)
     head = "".join(f"<th>{MOIS[m-1]}<small>{y}</small></th>" for y, m in months)
     common = dict(head=head, rows="\n".join(rows), qr=qr, evlist=evlist, y1=START_YEAR, y2=START_YEAR + 1,
@@ -120,15 +129,16 @@ TEMPLATE = """<!DOCTYPE html>
   body {{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }}
   .sheet {{ width: 283mm; height: 196mm; margin: 0 auto; display: flex; flex-direction: column; }}
   @media screen {{ body {{ background: #ccc; padding: 10mm 0; }} .sheet {{ background: #fff; padding: 7mm; width: 297mm; height: 210mm; box-shadow: 0 2px 12px rgba(0,0,0,.3); }} }}
-  header {{ display: flex; align-items: center; gap: 5mm; height: 24mm; margin-bottom: 2.5mm; }}
-  header img {{ height: 24mm; }}
+  header {{ display: flex; align-items: center; gap: 5mm; height: 27mm; margin-bottom: 2mm; }}
+  header img {{ height: 25mm; }}
   header .title {{ flex: 1; }}
   h1 {{ margin: 0; font-size: 22pt; letter-spacing: -.02em; line-height: 1.05; }}
   header p {{ margin: 1.5mm 0 0; font-size: 9.5pt; }}
-  .qr {{ display: flex; align-items: center; gap: 3mm; border: .5mm solid #000; border-radius: 3mm; padding: 2mm 3mm; height: 24mm; }}
-  .qr svg {{ width: 19mm; height: 19mm; }}
-  .qr div {{ font-size: 8.5pt; line-height: 1.25; width: 38mm; }}
-  .qr strong {{ font-size: 10pt; display: block; margin-bottom: .8mm; }}
+  .qr {{ display: flex; align-items: center; gap: 4mm; border: .8mm solid #000; border-radius: 3mm; padding: 1.5mm 4mm 1.5mm 1.5mm; height: 27mm; }}
+  .qr svg {{ width: 24mm; height: 24mm; }}
+  .qr div {{ font-size: 8.5pt; line-height: 1.2; width: 66mm; }}
+  .qr strong {{ font-size: 12pt; display: block; margin-bottom: .6mm; }}
+  .qr small {{ display: block; margin-top: 1.2mm; font-size: 7.5pt; }}
   table {{ flex: 1; width: 100%; border-collapse: collapse; table-layout: fixed; }}
   th {{ font-size: 9pt; text-transform: uppercase; letter-spacing: .04em; background: #000; color: #fff; padding: 1mm 0; border: .25mm solid #000; }}
   th small {{ display: block; font-size: 6.5pt; font-weight: normal; letter-spacing: 0; }}
@@ -150,7 +160,7 @@ TEMPLATE = """<!DOCTYPE html>
   .events {{ display: flex; align-items: baseline; gap: 3mm; margin-top: 2mm; border: .4mm solid #000; border-radius: 2mm; padding: 1.5mm 3mm; font-size: 8.5pt; }}
   .events h2 {{ margin: 0; font-size: 9pt; white-space: nowrap; text-transform: uppercase; }}
   .events ul {{ margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: .8mm 5mm; }}
-  .events li::before {{ content: "★ "; }}
+  .events .em {{ margin-right: .8mm; }}
   footer {{ display: flex; gap: 6mm; align-items: center; font-size: 7.5pt; margin-top: 2mm; }}
   .sw {{ display: inline-block; width: 6mm; height: 3mm; border: .2mm solid #000; vertical-align: middle; margin-right: 1mm; }}
   td.vac .ev, td.vac b, td.vac i {{ background: #fff; padding: 0 .3mm; }}
@@ -170,7 +180,7 @@ TEMPLATE = """<!DOCTYPE html>
       <h1>Calendrier de l'APE<br>Année scolaire {y1}-{y2}</h1>
       <p>École L'Eau Vive · Éveux — les événements de l'association des parents d'élèves</p>
     </div>
-    <div class="qr">{qr}<div><strong>Abonnez-vous&nbsp;!</strong>Scannez pour ajouter le calendrier de l'APE à votre téléphone et recevoir les mises à jour.</div></div>
+    <div class="qr">{qr}<div><strong>📲 Abonnez-vous&nbsp;!</strong>Scannez ce QR code pour ajouter le calendrier de l'APE à votre agenda (Google Agenda ou Calendrier de l'iPhone) et recevoir les mises à jour.<small>🔒 Votre agenda reste privé&nbsp;: l'APE ne le voit pas.</small></div></div>
   </header>
   <table>
     <thead><tr>{head}</tr></thead>
@@ -180,7 +190,7 @@ TEMPLATE = """<!DOCTYPE html>
   </table>
   <section class="events"><h2>Les rendez-vous de l'APE</h2><ul>{evlist}</ul></section>
   <footer>
-    <span><span class="sw sw-ev"></span><b>★ Événement de l'APE</b></span>
+    <span><span class="sw sw-ev"></span><b>Événement de l'APE</b></span>
     <span><span class="sw sw-vac"></span>Vacances scolaires zone A (Lyon)</span>
     <span><span class="sw sw-we"></span>Week-end</span>
     <span><b><u>1</u></b> Jour férié</span>
@@ -208,9 +218,9 @@ COULEUR_CSS = """
   td.ferie b, td.ferie i, .fer { color: #0b5394; }
   .qr { border-color: #0b5394; }
   .qr strong { color: #b0124f; }
+  .qr { border-color: #0b5394; }
   .events { border-color: #b0124f; }
   .events h2 { color: #b0124f; }
-  .events li::before { color: #b0124f; }
 """
 
 if __name__ == "__main__":
