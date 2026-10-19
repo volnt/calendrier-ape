@@ -33,7 +33,8 @@ COURT = {"Café des parents": "Café parents"}  # libellés raccourcis dans les 
 SPECIAUX = {dt.date(2026,9,1): "Rentrée"}
 # Emoji par événement (mot-clé en minuscules -> emoji). ★ par défaut.
 EMOJIS = [("pizz", "🍕"), ("noël", "🎄"), ("carnaval", "🎭"), ("fête", "🎉"),
-          ("grenier", "🧸"), ("café", "☕"), ("halloween", "🎃")]
+          ("grenier", "🧸"), ("café", "☕"), ("halloween", "🎃"),
+          ("tartiflette", "🧀"), ("truffade", "🧀"), ("slam", "🎤")]
 
 def emoji(summary):
     if summary and not summary[0].isalnum():  # titre commençant déjà par un emoji
@@ -53,6 +54,8 @@ def events():
                 f.setdefault(k.split(";")[0], (k, v))
         k, v = f["DTSTART"]
         summary = f.get("SUMMARY", ("", ""))[1].replace("\\,", ",").replace("\\;", ";")
+        if summary.strip().lower().endswith("(tentative)"):  # date pas encore confirmée
+            continue
         if "VALUE=DATE" in k or len(v) == 8:
             d, time = dt.datetime.strptime(v[:8], "%Y%m%d").date(), ""
         else:
